@@ -18,10 +18,10 @@ workflow BbCallOspC {
             input_fa = input_fa
     }
     output {
-        File ospC_all_hits_tsv = CallOspC.all_hits_tsv
-        File ospC_best_hits_tsv = CallOspC.best_hits_tsv
-        File ospC_contam_hits_tsv = CallOspC.contam_hits_tsv
-        File ospC_raw_hits_xml = CallOspC.raw_hits_xml
+        File ospC_all_hits_tsv = CallOspC.ospC_all_hits_tsv
+        File ospC_best_hits_tsv = CallOspC.ospC_best_hits_tsv
+        File ospC_contam_hits_tsv = CallOspC.ospC_contam_hits_tsv
+        File ospC_raw_hits_xml = CallOspC.ospC_raw_hits_xml
         String ospC_type = CallOspC.ospC_type
     }
 }
@@ -47,10 +47,10 @@ task CallOspC {
     >>>
 
     output {
-        File all_hits_tsv = "results/ospC_all.tsv"
-        File best_hits_tsv = "results/ospC_best.tsv"
-        File contam_hits_tsv = "results/ospC_contam.tsv"
-        File raw_hits_xml = "results/ospC_hits_xml.tar.gz"
+        File ospC_all_hits_tsv = "results/ospC_all.tsv"
+        File ospC_best_hits_tsv = "results/ospC_best.tsv"
+        File ospC_contam_hits_tsv = "results/ospC_contam.tsv"
+        File ospC_raw_hits_xml = "results/ospC_hits_xml.tar.gz"
         String ospC_type = read_string("results/ospC_type.txt")
     }
     #########################
