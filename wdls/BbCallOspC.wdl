@@ -18,10 +18,10 @@ workflow BbCallOspC {
             input_fa = input_fa
     }
     output {
-        File all_hits_tsv = CallOspC.all_hits_tsv
-        File best_hits_tsv = CallOspC.best_hits_tsv
-        File contam_hits_tsv = CallOspC.contam_hits_tsv
-        File raw_hits_xml = CallOspC.raw_hits_xml
+        File ospC_all_hits_tsv = CallOspC.all_hits_tsv
+        File ospC_best_hits_tsv = CallOspC.best_hits_tsv
+        File ospC_contam_hits_tsv = CallOspC.contam_hits_tsv
+        File ospC_raw_hits_xml = CallOspC.raw_hits_xml
         String ospC_type = CallOspC.ospC_type
     }
 }
