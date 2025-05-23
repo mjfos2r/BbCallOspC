@@ -18,13 +18,15 @@ workflow BbCallOspC {
             input_fa = input_fa
     }
     output {
-        File ospC_hits = CallOspC.pf32_hits
-        File contam_table = CallOspC.wp_hits
-        File all_hits_table = CallOspC.best_hits_tsv
+        File all_hits_tsv = CallOspC.all_hits_tsv
+        File best_hits_tsv = CallOspC.best_hits_tsv
+        File contam_hits_tsv = CallOspC.contam_hits_tsv
+        File raw_hits_xml = CallOspC.raw_hits_xml
+        String ospC_type = CallOspC.ospC_type
     }
 }
 
-task CallPlasmids {
+task CallOspC {
     input {
         String sample_id
         File input_fa
@@ -36,21 +38,20 @@ task CallPlasmids {
     }
     Int disk_size = 50 + 10 * ceil(size(input_fa, "GB"))
     command <<<
-        plasmid_caller \
+        ospc_caller \
             -i "~{input_fa}" \
             -o "results" \
             -t 8
         mv results/*.fasta results/"~{sample_id}_renamed.fasta"
-        tar -C results -czvf pf32_hits.tar.gz pf32
-        tar -C results -czvf wp_hits.tar.gz wp
+        tar -C results -czvf ospC_hits_xml.tar.gz ospC_v5/
     >>>
 
     output {
-        File renamed_fasta = "results/~{sample_id}_renamed.fasta"
-        File pf32_hits = "pf32_hits.tar.gz"
-        File wp_hits = "wp_hits.tar.gz"
-        File best_hits_json = "results/summary_best_hits.json"
-        File best_hits_tsv = "results/summary_best_hits.tsv"
+        File all_hits_tsv = "results/ospC_all.tsv"
+        File best_hits_tsv = "results/ospC_best.tsv"
+        File contam_hits_tsv = "results/ospC_contam.tsv"
+        File raw_hits_xml = "results/ospC_hits_xml.tar.gz"
+        String ospC_type = read_string("results/ospC_type.txt")
     }
     #########################
     RuntimeAttr default_attr = object {
@@ -60,7 +61,7 @@ task CallPlasmids {
         boot_disk_gb:       25,
         preemptible_tries:  0,
         max_retries:        0,
-        docker:             "mjfos2r/plasmid_caller:6.0.0"
+        docker:             "mjfos2r/ospc_caller:latest"
     }
     RuntimeAttr runtime_attr = select_first([runtime_attr_override, default_attr])
     runtime {
