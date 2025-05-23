@@ -43,7 +43,7 @@ task CallOspC {
             -o "results" \
             -t 8
         mv results/*.fasta results/"~{sample_id}_renamed.fasta"
-        tar -C results -czvf ospC_hits_xml.tar.gz ospC_v5/
+        tar -C results -czvf results/ospC_hits_xml.tar.gz ospC_v5/
     >>>
 
     output {
