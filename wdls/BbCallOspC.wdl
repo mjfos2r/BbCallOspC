@@ -23,6 +23,7 @@ workflow BbCallOspC {
         File ospC_contam_hits_tsv = CallOspC.ospC_contam_hits_tsv
         File ospC_raw_hits_xml = CallOspC.ospC_raw_hits_xml
         String ospC_type = CallOspC.ospC_type
+        File ospC_version = CallOspC.version
     }
 }
 
@@ -38,6 +39,8 @@ task CallOspC {
     }
     Int disk_size = 50 + 10 * ceil(size(input_fa, "GB"))
     command <<<
+        ospc_caller --version > ospc_caller_version.txt
+
         ospc_caller \
             -i "~{input_fa}" \
             -o "results" \
@@ -52,6 +55,7 @@ task CallOspC {
         File ospC_contam_hits_tsv = "results/ospC_contam.tsv"
         File ospC_raw_hits_xml = "results/ospC_hits_xml.tar.gz"
         String ospC_type = read_string("results/ospC_type.txt")
+        File version = "ospc_caller_version.txt"
     }
     #########################
     RuntimeAttr default_attr = object {
